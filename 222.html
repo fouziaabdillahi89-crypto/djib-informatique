@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Djib-Informatique · Dépannage IT</title>
+  <!-- Favicon intégré (SVG) -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%230b1a2e' stroke='%234dc3ff' stroke-width='3'/%3E%3Crect x='22' y='26' width='40' height='30' rx='4' fill='%23e6f4ff' opacity='0.95'/%3E%3Crect x='26' y='30' width='32' height='22' rx='2' fill='%230b1a2e'/%3E%3Cpath d='M30 36 L36 41 L30 46' stroke='%234dc3ff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M44 36 L38 41 L44 46' stroke='%234dc3ff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M72 36 L84 48 L80 52 L68 40 L72 36Z' fill='%23d7e8fa' stroke='%234dc3ff' stroke-width='2'/%3E%3Ccircle cx='77' cy='44' r='3' fill='%230088cc'/%3E%3Crect x='32' y='56' width='20' height='4' rx='2' fill='%234dc3ff'/%3E%3Crect x='38' y='60' width='8' height='8' rx='2' fill='%234dc3ff'/%3E%3Cpath d='M82 24 L84 30 L90 30 L85 34 L87 40 L82 36 L77 40 L79 34 L74 30 L80 30Z' fill='%23f5c542' opacity='0.9'/%3E%3C/svg%3E">
+  <!-- Fallback PNG pour les navigateurs ne supportant pas SVG -->
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAjpJREFUWEftlz9oFEEUxr9vZnZXAh4o1iIWEUSLU6sUgq20tApBSylE0VIiWESIFkKQ4B+kShEtFBVEQxQUCwkJpBBUUGNGjBjSyT3Wu5v3/Znc3CVBbNUin2Hee+/33s7szLcLkX8+OX1uYdn5r4vPF92uN+3l6coNY4yYzOcOcj15K7Nytfj50svpztuL8VT2uJhMhpnMTjEoMuiH09fvi1o9Xqi2PJmBxo3Zyc7vO1+/z8ex4sxJvSzR5HnWD+QmMtB+OJNpfnj+Yat+dyyfPZ3JnJzMbiRax79+CIP+cPPmLXY1K1trzDWu9MqOoxrd3u/9w6bH1rD1/e/l3xWfqdV4unT1oNuStJtlm3xghD9ytLhT1xunh54Z9IcDVav6qLrtHl1SzlkR6eCLiHtrwixzvH8hBnA1l7m6v2Rtw5Q6IwQaGKwmKtH4wd50Jp2j0g8Rmk6/vYpKcfwDy10uQ1d9c0UOh4El0yl2GzEF0S/IMrcfzE7Gj2wgPtdwls6lMv9SDm7bNm3BVG5JRAf7ShAZYLSXXRLM6htuK+7HMvGcIiD09YtrbzSmp+xHpCA26iml8MDmN6vxJ6GujIQq85kcypzEYb97rEXv9qVyW4nLOwVgA0An7PzwPQB/BD5n8nQJYhKhYYl4KxP6aFCoeQIiB04j+WNGJDv4Vx7YbKEJzyOVOGwVQQPMMmPOxXoKzqI+JYjY6sCysXWqW/0BaACa4P9wnaYAAAAASUVORK5CYII=">
+  <!-- Font Awesome (icônes modernes) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background: #f0f5fb;
+      color: #1e2b3c;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ===== HEADER & NAV ===== */
+    header {
+      background: #0b1a2e;
+      color: white;
+      padding: 14px 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid #1d3a57;
+    }
+
+    .header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-svg {
+      width: 56px;
+      height: 56px;
+      filter: drop-shadow(0 2px 10px rgba(0, 180, 255, 0.3));
+      transition: transform 0.3s ease;
+    }
+
+    .logo-svg:hover {
+      transform: rotate(-5deg) scale(1.02);
+    }
+
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #b3e5ff, #4dc3ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-area {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 26px;
+    }
+
+    nav a {
+      color: #eef5ff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 6px 0;
+      border-bottom: 3px solid transparent;
+      transition: 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    nav a:hover,
+    nav a.active {
+      border-bottom-color: #4dc3ff;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .header-social {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .header-social a {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .header-social a:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .header-social .wa:hover {
+      background: #25D366;
+    }
+
+    .header-social .gmail:hover {
+      background: #EA4335;
+    }
+
+    .header-social .fb:hover {
+      background: #1877F2;
+    }
+
+    /* ===== PAGE SECTIONS ===== */
+    .page {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0.3;
+        transform: translateY(12px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== ACCUEIL ===== */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border-radius: 40px;
+      padding: 40px 45px;
+      margin: 40px 0 30px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e9f0f8;
+    }
+
+    .hero-text {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .hero-text h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #0b1a2e;
+    }
+
+    .hero-text h1 span {
+      color: #0088cc;
+      background: #e6f4ff;
+      padding: 0 12px;
+      border-radius: 40px;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: #2c3e50;
+      margin: 18px 0 28px;
+      max-width: 550px;
+    }
+
+    .btn {
+      background: #0b1a2e;
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 6px 14px rgba(11, 26, 46, 0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn i {
+      font-size: 1.2rem;
+    }
+
+    .btn:hover {
+      background: #1a3350;
+      transform: scale(1.02);
+      box-shadow: 0 10px 22px rgba(0, 80, 150, 0.2);
+    }
+
+    .hero-image {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 30px;
+    }
+
+    .hero-photo {
+      width: 220px;
+      height: auto;
+      aspect-ratio: 4/4.5;
+      object-fit: cover;
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(11, 26, 46, 0.12);
+      border: 4px solid #ffffff;
+      background: #d7e8fa;
+    }
+
+    /* ===== BANDEAU DÉPANNAGE ===== */
+    .depannage-banner {
+      background: linear-gradient(135deg, #0b1a2e 0%, #1a3350 100%);
+      border-radius: 60px;
+      padding: 20px 35px;
+      margin: 20px 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      border: 1px solid #2a4b6e;
+    }
+
+    .depannage-banner .left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: white;
+    }
+
+    .depannage-banner .left i {
+      font-size: 2.6rem;
+      color: #4dc3ff;
+      background: rgba(77, 195, 255, 0.15);
+      padding: 14px;
+      border-radius: 50%;
+    }
+
+    .depannage-banner .left h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .depannage-banner .left p {
+      color: #b8d6f0;
+      font-size: 1rem;
+    }
+
+    .depannage-banner .right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .depannage-banner .right .btn-urgent {
+      background: #e63e2e;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 16px rgba(230, 62, 46, 0.3);
+    }
+
+    .depannage-banner .right .btn-urgent:hover {
+      background: #c72c1e;
+      transform: scale(1.04);
+      box-shadow: 0 10px 24px rgba(230, 62, 46, 0.4);
+    }
+
+    .depannage-banner .right .phone-badge {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(4px);
+      padding: 8px 22px;
+      border-radius: 60px;
+      color: #b3e5ff;
+      font-weight: 600;
+      font-size: 1.25rem;
+      border: 1px solid rgba(77, 195, 255, 0.2);
+    }
+
+    .depannage-banner .right .phone-badge i {
+      margin-right: 10px;
+      color: #4dc3ff;
+    }
+
+    /* ===== SERVICES ===== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+      margin: 40px 0;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 32px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02);
+      transition: 0.3s;
+      border: 1px solid #e9f0f8;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 18px 40px rgba(0, 80, 150, 0.08);
+      border-color: #b3d9ff;
+    }
+
+    .service-card i {
+      font-size: 3.8rem;
+      color: #0088cc;
+      background: #e3f0fa;
+      padding: 18px;
+      border-radius: 50%;
+      margin-bottom: 18px;
+    }
+
+    .service-card h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .service-card p {
+      color: #3a4c5e;
+      margin: 10px 0;
+    }
+
+    /* ===== CONTACT ===== */
+    .contact-wrapper {
+      background: white;
+      border-radius: 40px;
+      padding: 40px;
+      margin: 40px 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+      border: 1px solid #e9f0f8;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: space-between;
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .contact-info h2 {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+
+    .contact-detail {
+      margin: 22px 0;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 1.1rem;
+    }
+
+    .contact-detail i {
+      width: 48px;
+      height: 48px;
+      background: #e3f0fa;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1a2e;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      transition: 0.2s;
+    }
+
+    .contact-detail:hover i {
+      transform: scale(1.05);
+    }
+
+    .contact-detail a {
+      color: #0b1a2e;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .contact-detail a:hover {
+      color: #0088cc;
+    }
+
+    /* Logo Gmail personnalisé dans la section contact */
+    .contact-detail .gmail-logo {
+      background: #EA4335;
+      color: white;
+    }
+
+    .contact-detail .whatsapp-logo {
+      background: #25D366;
+      color: white;
+    }
+
+    .contact-detail .facebook-logo {
+      background: #1877F2;
+      color: white;
+    }
+
+    .contact-detail .location-logo {
+      background: #34A853;
+      color: white;
+    }
+
+    .contact-detail .phone-logo {
+      background: #0b1a2e;
+      color: white;
+    }
+
+    .contact-form {
+      flex: 1;
+      min-width: 260px;
+      background: #f8fcff;
+      padding: 28px;
+      border-radius: 40px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px 20px;
+      margin: 10px 0;
+      border: 1px solid #d6e4f0;
+      border-radius: 60px;
+      background: white;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+
+    .contact-form textarea {
+      border-radius: 30px;
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #0088cc;
+      box-shadow: 0 0 0 4px rgba(0, 136, 204, 0.1);
+    }
+
+    .contact-form button {
+      background: #0b1a2e;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 16px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-top: 10px;
+      transition: 0.25s;
+      cursor: pointer;
+    }
+
+    .contact-form button:hover {
+      background: #1a3350;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0b1a2e;
+      color: #d4e2f0;
+      padding: 40px 0 20px;
+      margin-top: 50px;
+      border-radius: 40px 40px 0 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-col h4 {
+      color: white;
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+    }
+
+    .footer-col p,
+    .footer-col a {
+      color: #b8cee0;
+      text-decoration: none;
+      display: block;
+      margin: 8px 0;
+      transition: 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: white;
+      padding-left: 6px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 15px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-social a {
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: 0.3s;
+      padding-left: 0 !important;
+    }
+
+    .footer-social a:hover {
+      transform: translateY(-4px);
+      padding-left: 0 !important;
+    }
+
+    .footer-social .wa:hover {
+      background: #25D366;
+    }
+
+    .footer-social .gmail:hover {
+      background: #EA4335;
+    }
+
+    .footer-social .fb:hover {
+      background: #1877F2;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #26415e;
+      padding-top: 25px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #8ba6c0;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 750px) {
+      .header-flex {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .nav-area {
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 16px;
+      }
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+      }
+
+      .hero-text {
+        margin-right: 0;
+      }
+
+      .hero-text p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-image {
+        margin-left: 0;
+        margin-top: 28px;
+      }
+
+      .hero-photo {
+        width: 180px;
+      }
+
+      .contact-row {
+        flex-direction: column;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .depannage-banner {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+
+      .depannage-banner .left {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .depannage-banner .right {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container header-flex">
+      <div class="logo-area">
+        <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="46" fill="#0b1a2e" stroke="#4dc3ff" stroke-width="3" />
+          <rect x="22" y="26" width="40" height="30" rx="4" fill="#e6f4ff" opacity="0.95" />
+          <rect x="26" y="30" width="32" height="22" rx="2" fill="#0b1a2e" />
+          <path d="M30 36 L36 41 L30 46" stroke="#4dc3ff" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M44 36 L38 41 L44 46" stroke="#4dc3ff" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M72 36 L84 48 L80 52 L68 40 L72 36Z" fill="#d7e8fa" stroke="#4dc3ff" stroke-width="2" />
+          <circle cx="77" cy="44" r="3" fill="#0088cc" />
+          <rect x="32" y="56" width="20" height="4" rx="2" fill="#4dc3ff" />
+          <rect x="38" y="60" width="8" height="8" rx="2" fill="#4dc3ff" />
+          <path d="M82 24 L84 30 L90 30 L85 34 L87 40 L82 36 L77 40 L79 34 L74 30 L80 30Z" fill="#f5c542"
+            opacity="0.9" />
+        </svg>
+        <span class="logo-text">Djib-Informatique</span>
+      </div>
+
+      <div class="nav-area">
+        <nav>
+          <ul>
+            <li><a href="#" class="active" data-page="home"><i class="fas fa-home"></i> Accueil</a></li>
+            <li><a href="#" data-page="services"><i class="fas fa-tools"></i> Services</a></li>
+            <li><a href="#" data-page="contact"><i class="fas fa-envelope"></i> Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-social">
+          <a href="https://wa.me/25377392657" target="_blank" class="wa" title="WhatsApp"><i
+              class="fab fa-whatsapp"></i></a>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=djibinformatique@gmail.com" target="_blank"
+            class="gmail" title="Gmail"><i class="fas fa-envelope-open-text"></i></a>
+          <a href="https://www.facebook.com/profile.php?id=61573523256642" target="_blank" class="fb"
+            title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ============ ACCUEIL ============ -->
+    <section id="home" class="page active">
+      <div class="hero">
+        <div class="hero-text">
+          <h1>Dépannage <span>informatique</span> <br>à Djibouti</h1>
+          <p><i class="fas fa-check-circle" style="color:#0088cc;"></i> Rapide, fiable et moderne. Nous réparons vos
+            ordinateurs, réseaux et périphériques.</p>
+          <button class="btn" onclick="navigateTo('services')"><i class="fas fa-arrow-right"></i> Nos services</button>
+        </div>
+        <div class="hero-image">
+          <img
+            src="https://z-cdn-media.chatglm.cn/files/17a64d25-fa74-41ea-8f97-5356cb34bc5e.jpg?auth_key=1886623047-43d879c9b4dd4e3cae38390731763333-0-97465e67795605027c94f0b5d095bdc9"
+            alt="Aboubakar Darsa Abdallah - Technicien Informatique" class="hero-photo">
+        </div>
+      </div>
+
+      <div class="depannage-banner">
+        <div class="left">
+          <i class="fas fa-bolt"></i>
+          <div>
+            <h3>Dépannage Rapide et Fiable</h3>
+            <p>Intervention à domicile ou à distance — diagnostic offert</p>
+          </div>
+        </div>
+        <div class="right">
+          <span class="phone-badge"><i class="fas fa-phone-alt"></i> 77.39.26.57</span>
+          <button class="btn-urgent" onclick="navigateTo('contact')">
+            <i class="fas fa-headset"></i> Urgence
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section id="services" class="page">
+      <h2 style="font-size: 2.4rem; margin: 30px 0 10px;"><i class="fas fa-wrench" style="color:#0088cc;"></i> Nos
+        Services</h2>
+      <p style="color: #2c3e50; font-size: 1.1rem;">Des solutions adaptées à chaque besoin, avec des tarifs
+        transparents.</p>
+      <div class="services-grid">
+        <div class="service-card">
+          <i class="fas fa-desktop"></i>
+          <h3>Ordinateurs Fixe & PC Portable</h3>
+          <p>Diagnostic, remplacement de pièces, optimisation système et récupération de données.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-network-wired"></i>
+          <h3>Réseau & WiFi</h3>
+          <p>Configuration routeur, panne réseau, câblage et sécurité.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-virus"></i>
+          <h3>Antivirus & Malware</h3>
+          <p>Nettoyage virus, ransomware, optimisation système.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <h3>Sauvegarde & Cloud</h3>
+          <p>Récupération de données, migration cloud, sauvegarde auto.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-print"></i>
+          <h3>Imprimantes & Périph.</h3>
+          <p>Installation, réparation, partage en réseau.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-headset"></i>
+          <h3>Assistance à distance</h3>
+          <p>Support téléphonique ou via TeamViewer / AnyDesk.</p>
+        </div>
+      </div>
+      <div style="background: #e3f0fa; border-radius: 30px; padding: 20px 30px; margin: 20px 0;">
+        <i class="fas fa-phone-alt" style="color: #0b1a2e;"></i> <strong>Urgence ?</strong> Appelez-nous au <a
+          href="tel:+25377392657" style="color:#0b1a2e; font-weight:700;">77.39.26.57</a> — intervention dans l'heure.
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="page">
+      <div class="contact-wrapper">
+        <h2 style="font-size: 2.4rem;"><i class="fas fa-address-card" style="color:#0088cc;"></i> Contactez-nous</h2>
+        <div class="contact-row">
+          <div class="contact-info">
+            <!-- Téléphone avec logo personnalisé -->
+            <div class="contact-detail">
+              <i class="fas fa-phone-alt phone-logo"></i>
+              <a href="tel:+25377392657">77.39.26.57</a> (appels & WhatsApp)
+            </div>
+            <!-- WhatsApp avec logo personnalisé -->
+            <div class="contact-detail">
+              <i class="fab fa-whatsapp whatsapp-logo"></i>
+              <a href="https://wa.me/25377392657" target="_blank">77.39.26.57</a>
+            </div>
+            <!-- Gmail avec logo personnalisé (couleurs Gmail) -->
+            <div class="contact-detail">
+              <i class="fas fa-envelope-open-text gmail-logo"></i>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=djibinformatique@gmail.com"
+                target="_blank">djibinformatique@gmail.com</a>
+            </div>
+            <!-- Facebook avec logo personnalisé -->
+            <div class="contact-detail">
+              <i class="fab fa-facebook-f facebook-logo"></i>
+              <a href="https://www.facebook.com/profile.php?id=61573523256642" target="_blank">Facebook</a>
+            </div>
+            <!-- Localisation avec logo personnalisé -->
+            <div class="contact-detail">
+              <i class="fas fa-map-marker-alt location-logo"></i>
+              Djibouti ville, Balbala PK 12
+            </div>
+            <div style="margin-top: 30px; background: #f0f7fe; padding: 20px; border-radius: 30px;">
+              <p><strong>Horaires :</strong> 7 jours sur 7, 24h/24</p>
+            </div>
+          </div>
+          <div class="contact-form">
+            <h3>Écrivez-nous</h3>
+            <form id="contactForm"
+              onsubmit="event.preventDefault(); alert('✅ Message envoyé (simulation). Nous vous répondrons rapidement.');">
+              <input type="text" placeholder="Votre nom" required>
+              <input type="email" placeholder="Email" required>
+              <input type="text" placeholder="Sujet">
+              <textarea placeholder="Décrivez votre panne..."></textarea>
+              <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer</button>
+            </form>
+            <p style="margin-top: 16px; text-align: center; font-size: 0.95rem;">
+              <i class="fas fa-envelope-open-text" style="color:#EA4335;"></i>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=djibinformatique@gmail.com" target="_blank"
+                style="color:#0b1a2e; font-weight:500;">Ouvrir Gmail pour nous écrire</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4><i class="fas fa-cog" style="color:#4dc3ff;"></i> Djib-Informatique</h4>
+          <p>Dépannage informatique à Djibouti. Réactivité et expertise.</p>
+          <div class="footer-social">
+            <a href="https://wa.me/25377392657" target="_blank" class="wa"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=djibinformatique@gmail.com" target="_blank"
+              class="gmail"><i class="fas fa-envelope-open-text"></i></a>
+            <a href="https://www.facebook.com/profile.php?id=61573523256642" target="_blank" class="fb"><i
+                class="fab fa-facebook-f"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Coordonnées</h4>
+          <p><i class="fas fa-phone-alt"></i> 77.39.26.57</p>
+          <p><i class="fab fa-whatsapp"></i> 77.39.26.57</p>
+          <p><i class="fas fa-envelope-open-text"></i> <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=djibinformatique@gmail.com" target="_blank"
+              style="color:#b8cee0;">Gmail</a></p>
+          <p><i class="fab fa-facebook-f"></i> <a href="https://www.facebook.com/profile.php?id=61573523256642"
+              target="_blank" style="color:#b8cee0;">Facebook</a></p>
+          <p><i class="fas fa-map-marker-alt"></i> Balbala PK 12</p>
+          <p><i class="fas fa-user"></i> Aboubakar Darsa Abdallah</p>
+        </div>
+        <div class="footer-col">
+          <h4>Liens utiles</h4>
+          <a href="#" onclick="navigateTo('home'); return false;">Accueil</a>
+          <a href="#" onclick="navigateTo('services'); return false;">Services</a>
+          <a href="#" onclick="navigateTo('contact'); return false;">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Djib-Informatique · Tous droits réservés</span>
+        <span><i class="fas fa-code"></i> Conçu avec soin à Djibouti</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    const pages = {
+      home: document.getElementById('home'),
+      services: document.getElementById('services'),
+      contact: document.getElementById('contact')
+    };
+
+    const navLinks = document.querySelectorAll('nav a[data-page]');
+
+    function navigateTo(pageId) {
+      Object.values(pages).forEach(p => p.classList.remove('active'));
+      if (pages[pageId]) pages[pageId].classList.add('active');
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.page === pageId) {
+          link.classList.add('active');
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const page = this.dataset.page;
+        if (page) navigateTo(page);
+      });
+    });
+
+    window.navigateTo = navigateTo;
+  </script>
+
+</body>
+
+</html>
